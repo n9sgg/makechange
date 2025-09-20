@@ -1,7 +1,7 @@
-# makechange
+# makeChange
 Code to make change from a given amount
 
-It has 1,5,10,20,100,1000 denominations it gave make chage for.
+It has 1,5,10,20,100,1000 denominations it gave make change for.
 
 To make the executable run the following at the bash prompt 
 
