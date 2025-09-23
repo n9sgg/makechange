@@ -16,7 +16,7 @@ To make the executable run the following at the bash prompt.
 
 Then you can run it and give the amount of change desired  ...
 
-> makeChage 1234.99
+> makeChange 1234.99
 
 Making change for USD$ 1234.99, Please wait.
 
