@@ -1,4 +1,4 @@
-# makeChange
+# makechange
 Code to make change from a given amount
 
 It has 1, 5, 10, 20, 50,100, 1000 denominations it can make change for.
