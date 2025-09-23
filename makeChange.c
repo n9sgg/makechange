@@ -1,68 +1,75 @@
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //
-// Steven Lamers, 2025
+// Steven Lamers, 2025 All rights reserved.
 // Given an amount to make change for and given different denominations
-// calcuate the change that we can give using these denoninations. 
+// calculate the change that we can give using these denominations.  
+// Uses only integer math, does not use floats.
 
-int coins[] = {1, 5, 10, 20, 50,100, 1000}; // Coin denominations
+// Coin denominations - pennies n/100th of a dollar
+int coins[] = {1, 5, 10, 20, 50, 100 };  
 const int numCoins = sizeof(coins) / sizeof(coins[0]);
 
-int changeFor(int amount) {
-    int totalpaid = 0;
-    // if amount is 0, no channge is needed
-    if (amount == 0) {
-        return 0;
-    }
-    // Highest denomination values first
-    for (int i = numCoins - 1; i >= 0; i--) {
+// Paper denominations in circulation in 2025 real world
+// int paper[] = {1, 2, 5, 10, 20, 50,100 };  
+// Paper denominations for testing or if you have larger bills
+int paper[] = {1, 2, 5, 10, 20, 50,100, 1000, 10000 };  
+const int numPaper = sizeof(paper) / sizeof(paper[0]);
 
-        if ( coins[i] <= amount ) {
-            // the coin is less than or equal to the amount.
-            // So how many coins can we pay out with this coin 
-	        // before it would go negative?
-            // then stop and pay that much and return how much 
-	        // we sitll owe
-            do {
-                    // pay with the coins value and total it
-                    totalpaid += coins[i] ;
-
-                    // show the payment
-                    printf("Here's %4d, that's %d \n", coins[i], totalpaid  );
-
-                    // how much more do we owe? 
-                    amount -= coins[i] ; // subtract what we've paid this time 
-
-                } while ( amount >= coins[i]  ) ; 
-					
-        }              
-    } // next coin
-
-     return( amount ); // should be 0
+int changeFor( int denom[], int numberOfDenom, int amount) {
+   int totalpaid = 0;   
+   if (amount == 0) { // if amount is 0, no change is needed
+       return 0;
+   }
+   // Highest denomination values first
+   for (int i = numberOfDenom - 1; i >= 0; i--) {
+       if ( denom[i] <= amount ) {
+           do {                  
+                   totalpaid += denom[i] ; // pay with the value and total it
+                   printf("Here's %5d, that's %d \n", denom[i], totalpaid  );
+                   amount -= denom[i] ; // subtract what we've paid this time  
+           } while ( amount >= denom[i]  ) ;  
+       }               
+   } // next bill
+    return( amount ); // should be 0
 }
 
 void main(int argc, char *argv[]) {
+   int dollars     = 0;
+   int cents       = 0;
+   int x;
+   char centstr[5];
 
-        int amount = 0; // Amount to make change for
-        int iou    = 0; // IOU
+       if (argc < 2) {
+               printf("Please provide an amount in dollars and cents between 0.00 and %d.99\n", __INT_MAX__ - 1 );
+               return;
+       }     
+        
+       char *args = argv[1];
 
-    	if (argc < 2) {
-        	printf("Please provide a number as a command line argument.\n");
-        	return;
-    	}
+       // Get the amount in dollars  
+       sscanf( args, "%d.", &dollars);  
+        
+       if( dollars >= __INT_MAX__  || dollars < 0  ){
+               printf("Please provide an amount in dollars and cents between 0.00 and %d.99\n", __INT_MAX__ - 1 );
+               return;
+       }
 
-    	amount = atoi(argv[1]);
+       sscanf( args, "%*[^.].%2s", centstr );   // Get the amount in cents
+       x = strlen( centstr);        
+        
+       sscanf(centstr, "%d", &cents);
+       printf("\nMaking change for USD$ %d.%02d, Please wait.\n", dollars, cents );
 
-        printf("\nMaking change for %d\n\n", amount);
-
-        do {
-                iou = changeFor(amount); 
-                amount = iou;
-
-        } while (  amount > 0) ;
-
-        printf("\nThank you, come again! \n\n");
-
+       if( x == 1 ) {
+           cents = cents * 10 ;
+       }
+           
+       printf("\nPaper Bills $%d dollars\n\n", dollars);
+       changeFor(paper, numPaper, dollars ); // Dollars change
+       printf("\nCoins %d cents\n\n", cents);    
+       changeFor(coins, numCoins, cents );   // Cents change    
+       printf("\nChange made for USD$ %d.%02d Thank you, come again! \n", dollars, cents );       
 }
