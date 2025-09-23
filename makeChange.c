@@ -10,12 +10,15 @@
 
 // Coin denominations - pennies n/100th of a dollar
 int coins[] = {1, 5, 10, 20, 50, 100 }; 
+
 const int numCoins = sizeof(coins) / sizeof(coins[0]);
 
 // Paper denominations in circulation in 2025 real world
 // int paper[] = {1, 2, 5, 10, 20, 50,100 }; 
+
 // Paper denominations for testing or if you have larger bills
 int paper[] = {1, 2, 5, 10, 20, 50,100, 1000, 10000 }; 
+
 const int numPaper = sizeof(paper) / sizeof(paper[0]);
 
 int changeFor( int denom[], int numberOfDenom, int amount) {
@@ -32,7 +35,8 @@ int changeFor( int denom[], int numberOfDenom, int amount) {
                     amount -= denom[i] ; // subtract what we've paid this time 
             } while ( amount >= denom[i]  ) ; 
         }              
-    } // next bill
+    } // next denomination
+
      return( amount ); // should be 0
 }
 
